@@ -12,7 +12,7 @@ let accessToken = '';
 let restUrl = '';
 
 async function getAccessToken() {
-  const url = `https://${MC_SUBDOMAIN}.auth.marketingcloudapis.com/v2/token`;
+  const url = `https://mc8d6gk0bxk851g6-g02k91bwbwy.auth.marketingcloudapis.com/v2/token`;
   const resp = await axios.post(url, {
     grant_type: 'client_credentials',
     client_id: MC_CLIENT_ID,
@@ -24,7 +24,7 @@ async function getAccessToken() {
 }
 
 async function getDERows() {
-  const url = `${restUrl}data/v1/customobjectdata/key/${MC_DE_KEY}/rowset`;
+  const url = `https://mc8d6gk0bxk851g6-g02k91bwbwy.rest.marketingcloudapis.com/data/v1/customobjectdata/key/${MC_DE_KEY}/rowset`;
   const resp = await axios.get(url, {
     headers: { Authorization: `Bearer ${accessToken}` }
   });
@@ -60,7 +60,7 @@ async function registerContact(row) {
     ]
   };
 
-  const url = `${restUrl}contacts/v1/contacts`;
+  const url = `https://mc8d6gk0bxk851g6-g02k91bwbwy.rest.marketingcloudapis.com/contacts/v1/contacts`;
   const resp = await axios.post(url, payload, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
