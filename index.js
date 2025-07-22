@@ -46,8 +46,8 @@ async function registerContact(row) {
             items: [
               {
                 values: {
-                  DeviceID: "03d51467-84b7-4835-982e-0570bbe71bbc",
-                  DeviceToken: "dBbkmVOlS7qEaHDCEbZlmM:APA91bHHkvpirhYr1oS1tXL5ZoVafy8EV3fmnQfHp3sbqNb_zyWhye57pBcO2RrbrkGAwu_a5MdXUUBs-GJpOIs8-SqQcABu1L6DWyK8EUGXiW2EBwG_xKU",
+                  DeviceID: "06d51467-84b7-4835-982e-0570bbe71bbc",
+                  DeviceToken: "12bkmVOlS7qEaHDCEbZlmM:APA91bHHkvpirhYr1oS1tXL5ZoVafy8EV3fmnQfHp3sbqNb_zyWhye57pBcO2RrbrkGAwu_a5MdXUUBs-GJpOIs8-SqQcABu1L6DWyK8EUGXiW2EBwG_xKU",
                   AppID: "d2bc490b-deeb-49df-b885-57c15c18f129",
                   Platform: "Android",
                   ContactKey: "0030D00000nS6tWQAS"
