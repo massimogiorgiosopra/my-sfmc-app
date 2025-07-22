@@ -47,7 +47,7 @@ async function registerContact(row) {
               {
                 values: {
                   DeviceID: values.DeviceID,
-                  DeviceToken: values.DeviceToken,
+                  DeviceToken: values.SystemToken,
                   AppID: values.ApID,
                   Platform: values.Platform,
                   ContactKey: contactKey
