@@ -2,10 +2,10 @@ require('dotenv').config();
 const axios = require('axios');
 
 const {
-  MC_CLIENT_ID = s7nwi3plpchd1jfyc8it91qj,
-  MC_CLIENT_SECRET = IuJm0YpMFnYImMKoJttUPVOn,
-  MC_SUBDOMAIN = mc8d6gk0bxk851g6-g02k91bwbwy,
-  MC_DE_KEY = RestoreContactDE
+  MC_CLIENT_ID,
+  MC_CLIENT_SECRET,
+  MC_SUBDOMAIN,
+  MC_DE_KEY
 } = process.env;
 
 let accessToken = '';
