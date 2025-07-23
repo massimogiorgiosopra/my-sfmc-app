@@ -137,8 +137,7 @@ async function searchContactByAttributes(contactKey) {
 async function main() {
   try {
     await getAccessToken();
-    await getUnitInformation();
-
+    
     await getDERows();
 
     console.log(`🔷 Starting search tests for ContactKey: ${CONTACT_KEY_TO_SEARCH}`);
