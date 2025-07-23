@@ -5,14 +5,16 @@ const {
   MC_CLIENT_ID,
   MC_CLIENT_SECRET,
   MC_SUBDOMAIN,
-  MC_DE_KEY
+  MC_DE_KEY,
+  CONTACT_KEY_TO_SEARCH
 } = process.env;
 
 let accessToken = "";
 let restUrl = "";
+let mid = "";
 
 /**
- * Get Access Token
+ * Get Access Token & MID
  */
 async function getAccessToken() {
   console.log("🔷 Requesting Access Token...");
@@ -25,8 +27,10 @@ async function getAccessToken() {
     });
     accessToken = resp.data.access_token;
     restUrl = resp.data.rest_instance_url;
+    mid = resp.data.organization ? resp.data.organization.id : "unknown";
     console.log("✅ Got access token");
     console.log(`ℹ️ REST URL: ${restUrl}`);
+    console.log(`ℹ️ Authenticated MID: ${mid}`);
   } catch (err) {
     console.error("🔥 Failed to get token:", err.response?.data || err.message);
     throw err;
@@ -34,7 +38,7 @@ async function getAccessToken() {
 }
 
 /**
- * Read DE Rows (optional, just to prove token works)
+ * Read DE Rows
  */
 async function getDERows() {
   console.log("🔷 Fetching DE Rows...");
@@ -52,13 +56,13 @@ async function getDERows() {
 }
 
 /**
- * Search Contact
+ * Search Contact by contactKey
  */
-async function searchContact(contactKey) {
+async function searchContactByKey(contactKey) {
   const url = `${restUrl}contacts/v1/contacts/search`;
   const payload = { contactKey };
 
-  console.log("🔷 Searching contact via /contacts/v1/contacts/search");
+  console.log(`🔷 Searching contact by contactKey: ${contactKey}`);
   console.log(`🔷 POST to: ${url}`);
   console.log(`🔷 Payload: ${JSON.stringify(payload, null, 2)}`);
 
@@ -70,10 +74,53 @@ async function searchContact(contactKey) {
       },
     });
 
-    console.log("✅ Search response:", JSON.stringify(resp.data, null, 2));
+    console.log("✅ Search by contactKey response:", JSON.stringify(resp.data, null, 2));
   } catch (err) {
     if (err.response) {
-      console.error("🔥 Search API Error Response:");
+      console.error("🔥 Search by contactKey API Error:");
+      console.error("Status:", err.response.status);
+      console.error("Data:", JSON.stringify(err.response.data, null, 2));
+    } else {
+      console.error("🔥 Search Request failed:", err.message);
+    }
+  }
+}
+
+/**
+ * Search Contact by attributeSets
+ */
+async function searchContactByAttributes(contactKey) {
+  const url = `${restUrl}contacts/v1/contacts/search`;
+  const payload = {
+    attributeSets: [
+      {
+        name: "Contact Demographics",
+        attributes: [
+          {
+            name: "ContactKey",
+            value: contactKey
+          }
+        ]
+      }
+    ]
+  };
+
+  console.log(`🔷 Searching contact using attributeSets for ContactKey: ${contactKey}`);
+  console.log(`🔷 POST to: ${url}`);
+  console.log(`🔷 Payload: ${JSON.stringify(payload, null, 2)}`);
+
+  try {
+    const resp = await axios.post(url, payload, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("✅ Search by attributeSets response:", JSON.stringify(resp.data, null, 2));
+  } catch (err) {
+    if (err.response) {
+      console.error("🔥 Search by attributeSets API Error:");
       console.error("Status:", err.response.status);
       console.error("Data:", JSON.stringify(err.response.data, null, 2));
     } else {
@@ -89,19 +136,18 @@ async function main() {
   try {
     await getAccessToken();
 
-    const rows = await getDERows();
+    await getDERows();
 
-    const contactKey = "0030D00000m52U1QAI";
+    console.log(`🔷 Starting search tests for ContactKey: ${CONTACT_KEY_TO_SEARCH}`);
 
-    console.log("🔷 Starting search test with ContactKey:", contactKey);
-
-    await searchContact(contactKey);
+    await searchContactByKey(CONTACT_KEY_TO_SEARCH);
+    await searchContactByAttributes(CONTACT_KEY_TO_SEARCH);
 
     console.log("🎯 Done!");
     process.exit(0);
 
   } catch (err) {
-    console.error("💥 Fatal error in process:", err.message);
+    console.error("💥 Fatal error:", err.message);
     process.exit(1);
   }
 }
