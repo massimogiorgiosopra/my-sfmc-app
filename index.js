@@ -41,11 +41,9 @@ async function getAccessToken() {
 async function getUnitInformation() {
     console.log("🔷 Get BU Information...");
   const url = `https://${MC_SUBDOMAIN}.auth.marketingcloudapis.com/platform/v1/tokenContext`;
-    try {
-    const resp = await axios.post(url, {
-      grant_type: "client_credentials",
-      client_id: MC_CLIENT_ID,
-      client_secret: MC_CLIENT_SECRET,
+  try {
+    const resp = await axios.get(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
     BUID = resp.data.organization;
     console.log(`ℹ️ Authenticated MID: ${BUID}`);
