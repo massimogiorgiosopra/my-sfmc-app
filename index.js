@@ -1,5 +1,5 @@
-require('dotenv').config();
-const axios = require('axios');
+const axios = require("axios");
+require("dotenv").config();
 
 const {
   MC_CLIENT_ID,
@@ -8,32 +8,45 @@ const {
   MC_DE_KEY
 } = process.env;
 
-let accessToken = '';
-let restUrl = '';
+let accessToken = "";
+let restUrl = "";
 
 async function getAccessToken() {
-  const url = `https://mc8d6gk0bxk851g6-g02k91bwbwy.auth.marketingcloudapis.com/v2/token`;
-  const resp = await axios.post(url, {
-    grant_type: 'client_credentials',
-    client_id: MC_CLIENT_ID,
-    client_secret: MC_CLIENT_SECRET
-  });
-  accessToken = resp.data.access_token;
-  restUrl = resp.data.rest_instance_url;
-  console.log('✅ Got access token');
+  console.log("🔷 Requesting Access Token...");
+  const url = `https://${MC_SUBDOMAIN}.auth.marketingcloudapis.com/v2/token`;
+  try {
+    const resp = await axios.post(url, {
+      grant_type: "client_credentials",
+      client_id: MC_CLIENT_ID,
+      client_secret: MC_CLIENT_SECRET,
+    });
+    accessToken = resp.data.access_token;
+    restUrl = resp.data.rest_instance_url;
+    console.log("✅ Got access token");
+    console.log(`ℹ️ REST URL: ${restUrl}`);
+  } catch (err) {
+    console.error("🔥 Failed to get token:", err.response?.data || err.message);
+    throw err;
+  }
 }
 
 async function getDERows() {
+  console.log("🔷 Fetching DE Rows...");
   const url = `${restUrl}data/v1/customobjectdata/key/${MC_DE_KEY}/rowset`;
-  const resp = await axios.get(url, {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  });
-  console.log(`📄 Retrieved ${resp.data.items.length} rows from DE`);
-  return resp.data.items;
+  try {
+    const resp = await axios.get(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    console.log(`✅ Retrieved ${resp.data.items.length} rows from DE`);
+    return resp.data.items;
+  } catch (err) {
+    console.error("🔥 Failed to fetch DE rows:", err.response?.data || err.message);
+    throw err;
+  }
 }
 
 async function registerContact(row) {
-  const contactKey = row.keys.ContactKey;
+  const contactKey = row.keys.ContactKey || "test-contact-123";
   const values = row.values;
 
   const payload = {
@@ -42,7 +55,7 @@ async function registerContact(row) {
         contactKey,
         attributeSets: [
           {
-            name: 'MobilePush Demographics',
+            name: "MobilePush Demographics",
             items: [
               {
                 values: {
@@ -51,29 +64,49 @@ async function registerContact(row) {
                   AppID: "d2bc490b-deeb-49df-b885-57c15c18f129",
                   Platform: "Android OS",
                   ContactKey: "0030D00000nS6tWQAS"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
   };
 
-  const url = `${restUrl}contacts/v1/contacts`;
-  const resp = await axios.post(url, payload, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    }
-  });
+  console.log("🔷 Preparing payload:");
+  console.log(JSON.stringify(payload, null, 2));
 
-  const response = resp.data.responses[0];
-  if (response.hasErrors) {
-    console.log(`⚠️ Errors for ContactKey ${contactKey}:`);
-    console.log(response.errors);
-  } else {
-    console.log(`✅ Registered Contact + MobilePush: ${contactKey}`);
+  const url = `${restUrl}contacts/v1/contacts`;
+  console.log(`🔷 POSTing to: ${url}`);
+
+  try {
+    const resp = await axios.post(url, payload, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("✅ Response Status:", resp.status);
+    console.log("✅ Response Data:", JSON.stringify(resp.data, null, 2));
+
+    const response = resp.data.responses?.[0];
+    if (response?.hasErrors) {
+      console.error(`⚠️ API reported errors for ContactKey ${contactKey}:`);
+      console.error(JSON.stringify(response.errors, null, 2));
+    } else {
+      console.log(`🎉 Successfully registered ContactKey ${contactKey}`);
+    }
+
+  } catch (err) {
+    if (err.response) {
+      console.error("🔥 API Error Response:");
+      console.error("Status:", err.response.status);
+      console.error("Data:", JSON.stringify(err.response.data, null, 2));
+    } else {
+      console.error("🔥 Request failed:", err.message);
+    }
+    throw err;
   }
 }
 
@@ -84,13 +117,14 @@ async function main() {
     const rows = await getDERows();
 
     for (const row of rows) {
+      console.log("🔷 Processing row with ContactKey:", row.keys.ContactKey);
       await registerContact(row);
     }
 
-    console.log('🎉 Done!');
+    console.log("🎯 Done!");
     process.exit(0);
   } catch (err) {
-    console.error('🔥 Error:', err.message);
+    console.error("💥 Fatal error in process:", err.message);
     process.exit(1);
   }
 }
