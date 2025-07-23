@@ -24,6 +24,7 @@ async function getAccessToken() {
       grant_type: "client_credentials",
       client_id: MC_CLIENT_ID,
       client_secret: MC_CLIENT_SECRET,
+      account_id: "100040647",
     });
     accessToken = resp.data.access_token;
     restUrl = resp.data.rest_instance_url;
