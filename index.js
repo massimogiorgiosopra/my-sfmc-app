@@ -46,7 +46,7 @@ async function getDERows() {
 }
 
 async function registerContact(row) {
-  const contactKey = "0030D00000nS6tWQAS";
+  const contactKey = row.keys.ContactKey || "0030D00000nS6tWQAS";
   const values = row.values;
 
   const payload = {
@@ -57,13 +57,13 @@ async function registerContact(row) {
           {
             name: "MobilePush Demographics",
             items: [
-            {
-              "values": {
-                "DeviceID": "06d51467-84b7-4835-982e-0570bbe71bbc",
-                "DeviceToken": "12bkmVOlS7qEaHDCEbZlmM:APA91bHHkvpirhYr1oS1tXL5ZoVafy8EV3fmnQfHp3sbqNb_zyWhye57pBcO2RrbrkGAwu_a5MdXUUBs-GJpOIs8-SqQcABu1L6DWyK8EUGXiW2EBwG_xKU",
-                "AppID": "d2bc490b-deeb-49df-b885-57c15c18f129",
-                "Platform": "Android",
-                "ContactKey": "0030D00000nS6tWQAS"
+              {
+                values: {
+                  DeviceID: "06d51467-84b7-4835-982e-0570bbe71bbc",
+                  DeviceToken: "12bkmVOlS7qEaHDCEbZlmM:APA91bHHkvpirhYr1oS1tXL5ZoVafy8EV3fmnQfHp3sbqNb_zyWhye57pBcO2RrbrkGAwu_a5MdXUUBs-GJpOIs8-SqQcABu1L6DWyK8EUGXiW2EBwG_xKU",
+                  AppID: "d2bc490b-deeb-49df-b885-57c15c18f129",
+                  Platform: "Android",
+                  ContactKey: "0030D00000nS6tWQAS"
                 },
               },
             ],
