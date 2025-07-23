@@ -50,6 +50,11 @@ async function getUnitInformation() {
     BUID = resp.data.organization;
     console.log(`ℹ️ Authenticated MID: ${BUID}`);
 }
+  catch (err) {
+    console.error("🔥 Failed to get token:", err.response?.data || err.message);
+    throw err;
+  }
+}
 /**
  * Read DE Rows
  */
