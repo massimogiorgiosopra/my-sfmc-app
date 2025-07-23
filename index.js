@@ -27,7 +27,7 @@ async function getAccessToken() {
     });
     accessToken = resp.data.access_token;
     restUrl = resp.data.rest_instance_url;
-    mid = resp.data.organization;
+    mid = resp.data.organization.id;
     console.log("✅ Got access token");
     console.log(`ℹ️ Access Token: ${accessToken}`);   
     console.log(`ℹ️ REST URL: ${restUrl}`);
@@ -37,22 +37,7 @@ async function getAccessToken() {
     throw err;
   }
 }
-/*NEW CODE*/
-async function getUnitInformation() {
-    console.log("🔷 Get BU Information...");
-  const url = `https://${MC_SUBDOMAIN}.auth.marketingcloudapis.com/platform/v1/tokenContext`;
-  try {
-    const resp = await axios.get(url, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    BUID = resp.data.organization;
-    console.log(`ℹ️ Authenticated MID: ${BUID}`);
-}
-  catch (err) {
-    console.error("🔥 Failed to get token:", err.response?.data || err.message);
-    throw err;
-  }
-}
+
 /**
  * Read DE Rows
  */
