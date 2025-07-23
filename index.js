@@ -46,7 +46,7 @@ async function getDERows() {
 }
 
 async function registerContact(row) {
-  const contactKey = row.keys.ContactKey || "test-contact-123";
+  const contactKey = "0030D00000nS6tWQAS";
   const values = row.values;
 
   const payload = {
