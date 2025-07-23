@@ -27,7 +27,7 @@ async function getAccessToken() {
     });
     accessToken = resp.data.access_token;
     restUrl = resp.data.rest_instance_url;
-    mid = resp.data.organization.id;
+    mid = resp.data.organization;
     console.log("✅ Got access token");
     console.log(`ℹ️ Access Token: ${accessToken}`);   
     console.log(`ℹ️ REST URL: ${restUrl}`);
