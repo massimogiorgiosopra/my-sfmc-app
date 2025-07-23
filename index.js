@@ -27,7 +27,7 @@ async function getAccessToken() {
     });
     accessToken = resp.data.access_token;
     restUrl = resp.data.rest_instance_url;
-    mid = resp.data.organization ? resp.data.organization.id : "unknown";
+    mid = resp.data.organization;
     console.log("✅ Got access token");
     console.log(`ℹ️ Access Token: ${accessToken}`);   
     console.log(`ℹ️ REST URL: ${restUrl}`);
@@ -37,7 +37,19 @@ async function getAccessToken() {
     throw err;
   }
 }
-
+/*NEW CODE*/
+async function getUnitInformation() {
+    console.log("🔷 Get BU Information...");
+  const url = `https://${MC_SUBDOMAIN}.auth.marketingcloudapis.com/platform/v1/tokenContext`;
+    try {
+    const resp = await axios.post(url, {
+      grant_type: "client_credentials",
+      client_id: MC_CLIENT_ID,
+      client_secret: MC_CLIENT_SECRET,
+    });
+    BUID = resp.data.organization;
+    console.log(`ℹ️ Authenticated MID: ${BUID}`);
+}
 /**
  * Read DE Rows
  */
