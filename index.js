@@ -46,7 +46,7 @@ async function getDERows() {
 }
 
 async function registerContact(row) {
-  const contactKey = row.keys.ContactKey || "test-contact-123";
+  const contactKey = row.keys.ContactKey || "test-email-contact-123";
   const values = row.values;
 
   const payload = {
@@ -55,15 +55,13 @@ async function registerContact(row) {
         contactKey,
         attributeSets: [
           {
-            name: "MobilePush Demographics",
+            name: "Email Addresses",
             items: [
               {
                 values: {
-                  DeviceID: "9f77a2ec-42d9-4c8d-9ec5-45a2dc9a0f51",
-                  DeviceToken: "dummytoken_ABCDEF1234567890_abcdefghijklmnopqrstuvwxyz_0987654321",
-                  AppID: "d2bc490b-deeb-49df-b885-57c15c18f129",
-                  Platform: "Android",
-                  ContactKey: "test-contact-123"
+                  EmailAddress: "testuser@example.com",
+                  SubscriberKey: "test-email-contact-123",
+                  Status: "Active"
                 },
               },
             ],
