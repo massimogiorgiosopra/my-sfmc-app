@@ -64,7 +64,6 @@ async function registerContact(row) {
                 "AppID": "d2bc490b-deeb-49df-b885-57c15c18f129",
                 "Platform": "Android",
                 "ContactKey": "0030D00000nS6tWQAS"
-              }
                 },
               },
             ],
