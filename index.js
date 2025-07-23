@@ -153,6 +153,7 @@ async function searchContactByAttributes(contactKey) {
 async function main() {
   try {
     await getAccessToken();
+    await getUnitInformation();
 
     await getDERows();
 
