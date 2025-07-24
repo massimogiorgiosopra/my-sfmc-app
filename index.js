@@ -33,116 +33,32 @@ async function registerContact() {
   // Safely extract ContactKey
   const contactKey = "acruz@example.com";
   
-  if (!contactKey) {
-    console.warn('⚠️ Skipping row: ContactKey missing or undefined.');
-    return;
-  }
-
-  console.log(`🔷 Processing row with ContactKey: ${contactKey}`);
+  console.log(`🔷 Processing ContactKey: ${contactKey}`);
 
 const payload = {
   contacts: [
-      {
-      "contactKey": "acruz@example.com",
-      "attributeSets": [{
+{
+  "contacts": [
+    {
+      "contactKey": "test123@example.com",
+      "attributeSets": [
+        {
           "name": "Email Addresses",
-          "items": [{
-              "values": [{
-                  "name": "Email Address",
-                  "value": "acruz@example.com"
-              },
-              {
-                  "name": "HTML Enabled",
-                  "value": true
-              }]
-          }]
-      },
-      {
-          "name": "Email Demographics",
-          "items": [{
-              "values": [{
-                  "name": "Last Name",
-                  "value": "Cruz"
-              },
-              {
-                  "name": "First Name",
-                  "value": "Angela"
-              },
-              {
-                  "name": "Text Profile Attribute",
-                  "value": "value 1"
-              },
-              {
-                  "name": "Number Profile Attribute",
-                  "value": 12345
-              }]
-          }]
-      },
-      {
-          "name": "MobileConnect Demographics",
-          "items": [{
-              "values": [{
-                  "name": "Mobile Number",
-                  "value": "317-531-5555"
-              },
-              {
-                  "name": "Locale",
-                  "value": "US"
-              },
-              {
-                  "name": "Status",
-                  "value": 1
-              }]
-          }]
-      },
-
-      {
-          "name": "GroupConnect LINE Addresses",
-          "items": [{
-              "values": [{
-                  "name": "Address ID",
-                  "value": "addressId_from_api"
+          "items": [
+            {
+              "values": {
+                "EmailAddress": "test123@example.com",
+                "SubscriberKey": "test123@example.com",
+                "Status": "Active"
               }
-             ]
-          }]
-      },
-      {
-  
-          "name": "GroupConnect LINE Subscriptions",
-          "items": [{
-              "values": [{
-                  "name": "Address ID",
-                  "value": "addressId_from_api"
-               },
-               {
-                  "name": "Channel ID",
-                  "value": "1234567890"
-              }]
-          }]
-      },
-      {
-          "name": "GroupConnect LINE Demographics",
-          "items": [{
-              "values": [{
-                  "name": "Address ID",
-                  "value": "addressId_from_api"
-              },
-              {
-                  "name": "Display Name",
-                  "value": "display_name"
-              },
-              {
-                  "name": "Picture Url",
-                  "value": "picture_url"
-              },
-              {
-                  "name": "Status Message",
-                  "value": "status_message"
-              }]
-          }]
-      }
-    ]
-  }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
   ]
 };
 
