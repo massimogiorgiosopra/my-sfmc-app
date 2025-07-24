@@ -29,7 +29,7 @@ async function getAccessToken() {
 }
 
 
-async function registerContact(row) {
+async function registerContact() {
   // Safely extract ContactKey
   const contactKey = "acruz@example.com";
   
@@ -179,7 +179,7 @@ const payload = {
 async function main() {
   try {
     await getAccessToken();
-    await registerContact(row);
+    await registerContact();
     console.log('🎯 Done!');
     process.exit(0);
   } catch (err) {
