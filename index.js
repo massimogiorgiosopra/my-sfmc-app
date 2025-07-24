@@ -28,37 +28,10 @@ async function getAccessToken() {
   console.log('ℹ️ REST URL:', restUrl);
 }
 
-async function getDERows() {
-  console.log('🔷 Fetching DE Rows...');
-  const url = `${restUrl}/data/v1/customobjectdata/key/${MC_DE_KEY}/rowset`;
-  try {
-    const resp = await axios.get(url, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-
-    if (!resp.data || !resp.data.items) {
-      console.error('❌ No items found in DE response:');
-      console.error(JSON.stringify(resp.data, null, 2));
-      return [];
-    }
-
-    console.log(`✅ Retrieved ${resp.data.items.length} rows from DE`);
-    return resp.data.items;
-
-  } catch (err) {
-    console.error('🔥 Error fetching DE rows:');
-    console.error('Status:', err.response?.status);
-    console.error('Data:', JSON.stringify(err.response?.data, null, 2));
-    throw new Error('💥 Fatal error in getDERows: ' + err.message);
-  }
-}
 
 async function registerContact(row) {
-  // Log raw row for debugging
-  console.log('🔍 Full DE row:', JSON.stringify(row, null, 2));
-
   // Safely extract ContactKey
-  const contactKey = row?.keys?.ContactKey || row?.values?.contactkey || row?.ContactKey;
+  const contactKey = "acruz@example.com";
   
   if (!contactKey) {
     console.warn('⚠️ Skipping row: ContactKey missing or undefined.');
@@ -218,10 +191,7 @@ const payload = {
 async function main() {
   try {
     await getAccessToken();
-    const rows = await getDERows();
-    for (const row of rows) {
-      await registerContact(row);
-    }
+    await registerContact(row);
     console.log('🎯 Done!');
     process.exit(0);
   } catch (err) {
