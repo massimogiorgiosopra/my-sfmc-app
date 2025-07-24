@@ -35,8 +35,7 @@ async function registerContact() {
   
   console.log(`🔷 Processing ContactKey: ${contactKey}`);
 
-const payload = {
-  contacts: [
+const payload = 
 {
   "contacts": [
     {
@@ -59,8 +58,6 @@ const payload = {
   ]
 }
 
-  ]
-};
 
   const url = `${restUrl}contacts/v1/contacts`;
   console.log('🔷 Preparing payload:');
