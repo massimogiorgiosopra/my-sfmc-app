@@ -73,7 +73,7 @@ function registerContact(token, restUrl) {
     ]
   });
 
-  const url = new URL(`${restUrl}/contacts/v1/contacts`);
+  const url = new URL(`${restUrl}contacts/v1/contacts`);
   const options = {
     hostname: url.hostname,
     path: url.pathname,
