@@ -97,19 +97,7 @@ const payload = {
               }]
           }]
       },
-      {
-          "name": "MobilePush Demographics",
-          "items": [{
-              "values": [{
-                  "name": "Device ID",
-                  "value": 958405948
-              },
-              {
-                  "name": "Application",
-                  "value": 958405948
-              }]
-          }]
-      },
+
       {
           "name": "GroupConnect LINE Addresses",
           "items": [{
