@@ -68,29 +68,27 @@ async function registerContact(row) {
 
   const values = row.values || {};
 
-  const payload = {
-    contacts: [
-      {
-        contactKey,
-        attributeSets: [
-          {
-            name: 'MobilePush Demographics',
-            items: [
-              {
-                values: {
-                  DeviceID: values.deviceid,
-                  DeviceToken: values.systemtoken,
-                  AppID: values.apid,
-                  Platform: values.platform,
-                  ContactKey: contactKey
-                }
+const payload = {
+  contacts: [
+    {
+      contactKey: "test123@example.com",
+      attributeSets: [
+        {
+          name: "Email Addresses",
+          items: [
+            {
+              values: {
+                EmailAddress: "test123@example.com",
+                SubscriberKey: "test123@example.com",
+                Status: "Active"
               }
-            ]
-          }
-        ]
-      }
-    ]
-  };
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
 
   const url = `${restUrl}/contacts/v1/contacts`;
   console.log('🔷 Preparing payload:');
