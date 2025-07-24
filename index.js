@@ -40,8 +40,6 @@ async function registerContact() {
 
   console.log(`🔷 Processing row with ContactKey: ${contactKey}`);
 
-  const values = row.values || {};
-
 const payload = {
   contacts: [
       {
