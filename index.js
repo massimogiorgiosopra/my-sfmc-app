@@ -30,12 +30,28 @@ async function getAccessToken() {
 async function getDERows() {
   console.log('🔷 Fetching DE Rows...');
   const url = `${restUrl}/data/v1/customobjectdata/key/${MC_DE_KEY}/rowset`;
-  const resp = await axios.get(url, {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  });
-  console.log(`✅ Retrieved ${resp.data.items.length} rows from DE`);
-  return resp.data.items;
+  try {
+    const resp = await axios.get(url, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    if (!resp.data || !resp.data.items) {
+      console.error('❌ No items found in DE response:');
+      console.error(JSON.stringify(resp.data, null, 2));
+      return [];
+    }
+
+    console.log(`✅ Retrieved ${resp.data.items.length} rows from DE`);
+    return resp.data.items;
+
+  } catch (err) {
+    console.error('🔥 Error fetching DE rows:');
+    console.error('Status:', err.response?.status);
+    console.error('Data:', JSON.stringify(err.response?.data, null, 2));
+    throw new Error('💥 Fatal error in getDERows: ' + err.message);
+  }
 }
+
 
 async function registerContact(row) {
   const contactKey = row.keys?.ContactKey || row.values?.ContactKey;
