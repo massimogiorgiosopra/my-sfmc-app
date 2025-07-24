@@ -4,9 +4,8 @@ const axios = require('axios');
 const {
   MC_CLIENT_ID,
   MC_CLIENT_SECRET,
-  MC_SUBDOMAIN,
-  MC_DE_KEY,
-  MC_ACCOUNT_ID
+  MC_ACCOUNT_ID,
+  MC_SUBDOMAIN
 } = process.env;
 
 let accessToken = '';
@@ -15,121 +14,57 @@ let restUrl = '';
 async function getAccessToken() {
   const url = `https://${MC_SUBDOMAIN}.auth.marketingcloudapis.com/v2/token`;
   console.log('🔷 Requesting Access Token...');
-  const resp = await axios.post(url, {
+
+  const response = await axios.post(url, {
     grant_type: 'client_credentials',
     client_id: MC_CLIENT_ID,
     client_secret: MC_CLIENT_SECRET,
     account_id: MC_ACCOUNT_ID
   });
-  accessToken = resp.data.access_token;
-  restUrl = resp.data.rest_instance_url;
+
+  accessToken = response.data.access_token;
+  restUrl = response.data.rest_instance_url;
   console.log('✅ Got access token');
-  console.log(`🔷 access token: ${accessToken}`);  
   console.log('ℹ️ REST URL:', restUrl);
 }
 
-async function getDERows() {
-  console.log('🔷 Fetching DE Rows...');
-  const url = `${restUrl}/data/v1/customobjectdata/key/${MC_DE_KEY}/rowset`;
-  try {
-    const resp = await axios.get(url, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
+async function listBusinessUnits() {
+  console.log('🔷 Retrieving list of Business Units...');
+  const url = `${restUrl}/platform/v1/bunit/`;
 
-    if (!resp.data || !resp.data.items) {
-      console.error('❌ No items found in DE response:');
-      console.error(JSON.stringify(resp.data, null, 2));
-      return [];
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
     }
+  });
 
-    console.log(`✅ Retrieved ${resp.data.items.length} rows from DE`);
-    return resp.data.items;
+  const businessUnits = response.data.items || [];
 
-  } catch (err) {
-    console.error('🔥 Error fetching DE rows:');
-    console.error('Status:', err.response?.status);
-    console.error('Data:', JSON.stringify(err.response?.data, null, 2));
-    throw new Error('💥 Fatal error in getDERows: ' + err.message);
-  }
-}
+  console.log(`✅ Found ${businessUnits.length} business units:\n`);
 
-async function registerContact(row) {
-  // Log raw row for debugging
-  console.log('🔍 Full DE row:', JSON.stringify(row, null, 2));
-
-  // Safely extract ContactKey
-  const contactKey = row?.keys?.ContactKey || row?.values?.contactkey || row?.ContactKey;
-  
-  if (!contactKey) {
-    console.warn('⚠️ Skipping row: ContactKey missing or undefined.');
-    return;
-  }
-
-  console.log(`🔷 Processing row with ContactKey: ${contactKey}`);
-
-  const values = row.values || {};
-
-const payload = {
-  contacts: [
-    {
-      contactKey: "test123@example.com",
-      attributeSets: [
-        {
-          name: "Email Addresses",
-          items: [
-            {
-              values: {
-                EmailAddress: "test123@example.com",
-                SubscriberKey: "test123@example.com",
-                Status: "Active"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
-
-  const url = `${restUrl}/contacts/v1/contacts`;
-  console.log('🔷 Preparing payload:');
-  console.log(JSON.stringify(payload, null, 2));
-  console.log(`🔷 POSTing to: ${url}`);
-
-  try {
-    const resp = await axios.post(url, payload, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const response = resp.data.responses?.[0];
-    if (response?.hasErrors) {
-      console.log(`⚠️ Errors for ContactKey ${contactKey}:`);
-      console.log(response.errors);
-    } else {
-      console.log(`✅ Registered Contact + MobilePush: ${contactKey}`);
-    }
-  } catch (error) {
-    console.error('🔥 API Error Response:');
-    console.error('Status:', error.response?.status);
-    console.error('Data:', JSON.stringify(error.response?.data, null, 2));
-    throw new Error('💥 Fatal error in process: ' + error.message);
-  }
+  businessUnits.forEach((bu, i) => {
+    console.log(`🔹 [${i + 1}] Name: ${bu.name}`);
+    console.log(`   MID (accountId): ${bu.accountId}`);
+    console.log(`   Parent MID: ${bu.parentId}`);
+    console.log(`   Email: ${bu.email}`);
+    console.log(`   Type: ${bu.type}`);
+    console.log(`   Created Date: ${bu.createdDate}`);
+    console.log('----------------------------------------');
+  });
 }
 
 async function main() {
   try {
     await getAccessToken();
-    const rows = await getDERows();
-    for (const row of rows) {
-      await registerContact(row);
-    }
-    console.log('🎯 Done!');
+    await listBusinessUnits();
+    console.log('🎯 Done.');
     process.exit(0);
-  } catch (err) {
-    console.error('💥 Fatal error:', err.message);
+  } catch (error) {
+    console.error('💥 Error:', error.message);
+    if (error.response) {
+      console.error('🔥 Status:', error.response.status);
+      console.error('🔥 Details:', JSON.stringify(error.response.data, null, 2));
+    }
     process.exit(1);
   }
 }
