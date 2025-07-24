@@ -52,11 +52,24 @@ async function getDERows() {
   }
 }
 
-
 async function registerContact(row) {
-  const contactKey = row.keys?.ContactKey || row.values?.ContactKey;
+  // Log raw row for debugging
+  console.log('🔍 Full DE row:', JSON.stringify(row, null, 2));
+
+  // Safely extract ContactKey
+  const contactKey =
+    row?.keys?.ContactKey ||
+    row?.values?.ContactKey ||
+    row?.ContactKey;
+
+  if (!contactKey) {
+    console.warn('⚠️ Skipping row: ContactKey missing or undefined.');
+    return;
+  }
+
   console.log(`🔷 Processing row with ContactKey: ${contactKey}`);
-  const values = row.values;
+
+  const values = row.values || {};
 
   const payload = {
     contacts: [
