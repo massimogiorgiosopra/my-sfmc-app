@@ -187,7 +187,7 @@ const payload = {
   ]
 };
 
-  const url = `${restUrl}/contacts/v1/contacts`;
+  const url = `${restUrl}contacts/v1/contacts`;
   console.log('🔷 Preparing payload:');
   console.log(JSON.stringify(payload, null, 2));
   console.log(`🔷 POSTing to: ${url}`);
