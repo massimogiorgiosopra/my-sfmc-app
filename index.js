@@ -24,6 +24,7 @@ async function getAccessToken() {
   accessToken = resp.data.access_token;
   restUrl = resp.data.rest_instance_url;
   console.log('✅ Got access token');
+  console.log(`🔷 access token: ${accessToken}`);  
   console.log('ℹ️ REST URL:', restUrl);
 }
 
