@@ -57,11 +57,8 @@ async function registerContact(row) {
   console.log('🔍 Full DE row:', JSON.stringify(row, null, 2));
 
   // Safely extract ContactKey
-  const contactKey =
-    row?.keys?.ContactKey ||
-    row?.values?.ContactKey ||
-    row?.ContactKey;
-
+  const contactKey = row?.keys?.ContactKey || row?.values?.contactkey || row?.ContactKey;
+  
   if (!contactKey) {
     console.warn('⚠️ Skipping row: ContactKey missing or undefined.');
     return;
@@ -81,10 +78,10 @@ async function registerContact(row) {
             items: [
               {
                 values: {
-                  DeviceID: values.DeviceID,
-                  DeviceToken: values.DeviceToken,
-                  AppID: values.AppID,
-                  Platform: values.Platform,
+                  DeviceID: values.deviceid,
+                  DeviceToken: values.systemtoken,
+                  AppID: values.apid,
+                  Platform: values.platform,
                   ContactKey: contactKey
                 }
               }
