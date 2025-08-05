@@ -37,23 +37,45 @@ async function registerContact() {
 
 const payload = 
 {
-  "contacts": [
-    {
-      "contactKey": "test123@example.com",
-      "attributeSets": [
-        {
-          "name": "Email Addresses",
-          "items": [
-            {
-              "values": {
-                "EmailAddress": "test123@example.com",
-                "SubscriberKey": "test123@example.com"              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
+"contactKey": "postmandemo1",
+"attributeSets": [
+{
+"name": "Email Addresses",
+"items": [
+{
+"values": [
+{
+"name": "Email Address",
+"value": "aaron.cates@salesforce.com"
+},
+{
+"name": "HTML Enabled",
+"value": true
+}
+]
+}
+]
+},
+{
+"name": "Email Demographics",
+"items": [
+{
+"values": [
+{
+"name": "Last Name",
+"value": "Cates"
+},
+{
+"name": "First Name",
+"value": "Aaron"
+}
+
+
+]
+}
+]
+}
+]
 }
 
 
