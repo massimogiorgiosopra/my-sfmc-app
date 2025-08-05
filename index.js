@@ -47,9 +47,7 @@ const payload =
             {
               "values": {
                 "EmailAddress": "test123@example.com",
-                "SubscriberKey": "test123@example.com",
-                "Status": "Active"
-              }
+                "SubscriberKey": "test123@example.com"              }
             }
           ]
         }
