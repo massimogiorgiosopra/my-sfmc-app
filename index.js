@@ -6,7 +6,7 @@ const MC_ACCOUNT_ID = process.env.MC_ACCOUNT_ID;
 const MC_SUBDOMAIN = process.env.MC_SUBDOMAIN;
   
 const init = {
-  host: 'mc8d6gk0bxk851g6-g02k91bwbwy.auth.marketingcloudapis.com',
+  host: `${MC_SUBDOMAIN}.auth.marketingcloudapis.com`,
   path: '/v2/token',
   method: 'POST',
   headers: {
