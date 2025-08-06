@@ -25,11 +25,11 @@ const callback = function(response) {
 };
 
 const req = http.request(init, callback);
-const body = `{
+const body = JSON.stringify({
    grant_type: 'client_credentials',
    client_id: MC_CLIENT_ID,
    client_secret: MC_CLIENT_SECRET,
    account_id: MC_ACCOUNT_ID
-}`;
+});
 req.write(body);
 req.end();
