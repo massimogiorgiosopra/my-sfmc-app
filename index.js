@@ -1,11 +1,3 @@
-const {
-  MC_CLIENT_ID,
-  MC_CLIENT_SECRET,
-  MC_SUBDOMAIN,
-  MC_DE_KEY,
-  MC_ACCOUNT_ID
-} = process.env;
-
 const http = require('https');
 const init = {
   host: 'mc8d6gk0bxk851g6-g02k91bwbwy.auth.marketingcloudapis.com',
