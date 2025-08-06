@@ -1,14 +1,12 @@
-const {
-  MC_CLIENT_ID,
-  MC_CLIENT_SECRET,
-  MC_SUBDOMAIN,
-  MC_DE_KEY,
-  MC_ACCOUNT_ID
-}
-
 const http = require('https');
+
+const MC_CLIENT_ID = process.env.MC_CLIENT_ID;
+const MC_CLIENT_SECRET = process.env.MC_CLIENT_SECRET;
+const MC_ACCOUNT_ID = process.env.MC_ACCOUNT_ID;
+const MC_SUBDOMAIN = process.env.MC_SUBDOMAIN;
+  
 const init = {
-  host: 'mc8d6gk0bxk851g6-g02k91bwbwy.auth.marketingcloudapis.com',
+  host: `${MC_SUBDOMAIN}.auth.marketingcloudapis.com`,
   path: '/v2/token',
   method: 'POST',
   headers: {
