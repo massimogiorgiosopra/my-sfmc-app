@@ -8,7 +8,7 @@ const {
 
 const http = require('https');
 const init = {
-  host: `${MC_SUBDOMAIN}.auth.marketingcloudapis.com`,
+  host: '{MC_SUBDOMAIN}.auth.marketingcloudapis.com',
   path: '/v2/token',
   method: 'POST',
   headers: {
@@ -30,9 +30,9 @@ const callback = function(response) {
 const req = http.request(init, callback);
 const body = `{
   "grant_type": "client_credentials",
-  "client_id": MC_CLIENT_ID,
-  "client_secret": MC_CLIENT_SECRET,
-  "account_id": MC_ACCOUNT_ID
+  "client_id": {MC_CLIENT_ID},
+  "client_secret": {MC_CLIENT_SECRET},
+  "account_id": {MC_ACCOUNT_ID}
 }`;
 req.write(body);
 req.end();
