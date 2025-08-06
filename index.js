@@ -1,6 +1,12 @@
 const http = require('https');
+
+const MC_CLIENT_ID = process.env.MC_CLIENT_ID;
+const MC_CLIENT_SECRET = process.env.MC_CLIENT_SECRET;
+const MC_ACCOUNT_ID = process.env.MC_ACCOUNT_ID;
+const MC_SUBDOMAIN = process.env.MC_SUBDOMAIN;
+  
 const init = {
-  host: '{subdomain}.auth.marketingcloudapis.com',
+  host: `${MC_SUBDOMAIN}.auth.marketingcloudapis.com`,
   path: '/v2/token',
   method: 'POST',
   headers: {
@@ -14,17 +20,16 @@ const callback = function(response) {
   });
   
   response.on('end', function() {
-    // result has response body buffer
-    console.log(result.toString());
+  console.log(result.toString());
   });
 };
 
 const req = http.request(init, callback);
-const body = `{
-  "grant_type": "client_credentials",
-  "client_id": "u62kv6duobqgod3t5example",
-  "client_secret": "POiA9FJ6eWW2BuedVexample",
-  "account_id": "99999"
-}`;
+const body = JSON.stringify({
+   grant_type: 'client_credentials',
+   client_id: MC_CLIENT_ID,
+   client_secret: MC_CLIENT_SECRET,
+   account_id: MC_ACCOUNT_ID
+});
 req.write(body);
 req.end();
