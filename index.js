@@ -14,8 +14,8 @@ const callback = function(response) {
   });
   
   response.on('end', function() {
-    // result has response body buffer
-    console.log(result.toString());
+  accessToken = result.data.access_token;
+  console.log(`🔷 access token: ${accessToken}`);  
   });
 };
 
