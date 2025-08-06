@@ -70,7 +70,7 @@ function triggerAutomation(restUrl, token) {
     path: `/automation/v1/automations/key:${automationKey}/actions/run`,
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${accessToken}`
+      'Authorization': `Bearer ${token}`
     }
   };
 
