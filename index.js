@@ -6,6 +6,7 @@ const {
   MC_CLIENT_SECRET,
   MC_SUBDOMAIN,
   MC_DE_KEY,
+  ID,
   MC_ACCOUNT_ID
 } = process.env;
 
@@ -28,95 +29,26 @@ async function getAccessToken() {
   console.log('ℹ️ REST URL:', restUrl);
 }
 
-
-async function registerContact() {
-  // Safely extract ContactKey
-  const contactKey = "acruz@example.com";
+const http = require('https');
+const init = {
+  host: `https://${MC_SUBDOMAIN}.rest.marketingcloudapis.com`,
+  path: '/automation/v1/automations/{id}/actions/runallonce',
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${accessToken}`
+  }
+};
+const callback = function(response) {
+  let result = Buffer.alloc(0);
+  response.on('data', function(chunk) {
+    result = Buffer.concat([result, chunk]);
+  });
   
-  console.log(`🔷 Processing ContactKey: ${contactKey}`);
+  response.on('end', function() {
+    // result has response body buffer
+    console.log(result.toString());
+  });
+};
 
-const payload = 
-{
-"contactKey": "postmandemo1",
-"attributeSets": [
-{
-"name": "Email Addresses",
-"items": [
-{
-"values": [
-{
-"name": "Email Address",
-"value": "aaron.cates@salesforce.com"
-},
-{
-"name": "HTML Enabled",
-"value": true
-}
-]
-}
-]
-},
-{
-"name": "Email Demographics",
-"items": [
-{
-"values": [
-{
-"name": "Last Name",
-"value": "Cates"
-},
-{
-"name": "First Name",
-"value": "Aaron"
-}
-
-
-]
-}
-]
-}
-]
-}
-
-
-  const url = `${restUrl}contacts/v1/contacts`;
-  console.log('🔷 Preparing payload:');
-  console.log(JSON.stringify(payload, null, 2));
-  console.log(`🔷 POSTing to: ${url}`);
-
-  try {
-    const resp = await axios.post(url, payload, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const response = resp.data.responses?.[0];
-    if (response?.hasErrors) {
-      console.log(`⚠️ Errors for ContactKey ${contactKey}:`);
-      console.log(response.errors);
-    } else {
-      console.log(`✅ Registered Contact + MobilePush: ${contactKey}`);
-    }
-  } catch (error) {
-    console.error('🔥 API Error Response:');
-    console.error('Status:', error.response?.status);
-    console.error('Data:', JSON.stringify(error.response?.data, null, 2));
-    throw new Error('💥 Fatal error in process: ' + error.message);
-  }
-}
-
-async function main() {
-  try {
-    await getAccessToken();
-    await registerContact();
-    console.log('🎯 Done!');
-    process.exit(0);
-  } catch (err) {
-    console.error('💥 Fatal error:', err.message);
-    process.exit(1);
-  }
-}
-
-main();
+const req = http.request(init, callback);
+req.end();
