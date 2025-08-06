@@ -8,7 +8,7 @@ const {
 
 const http = require('https');
 const init = {
-  host: '{MC_SUBDOMAIN}.auth.marketingcloudapis.com',
+  host: 'mc8d6gk0bxk851g6-g02k91bwbwy.auth.marketingcloudapis.com',
   path: '/v2/token',
   method: 'POST',
   headers: {
