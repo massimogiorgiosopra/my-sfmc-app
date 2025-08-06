@@ -46,10 +46,10 @@ const authRequest = https.request(authOptions, (authResponse) => {
     console.log('🌍 Instance URL:', instanceUrl);
 
     // Step 2: Trigger the Automation
-    const automationPath = ;
+    const automationPath = `/automation/v1/automations/key:${automationKey}/actions/run`;
     const automationOptions = {
-      host: `${subdomain}.rest.marketingcloudapis.com`,
-      path: `/automation/v1/automations/key:${automationKey}/actions/run`,
+      host: instanceUrl.replace('https://', ''),
+      path: automationPath,
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`
