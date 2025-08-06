@@ -49,6 +49,7 @@ const authRequest = https.request(authOptions, (res) => {
       console.log("🌍 REST URL:", instanceUrl);
 
       // Step 2: Trigger Automation
+      triggerAutomation(instanceUrl, accessToken);
     } catch (err) {
       console.error("❌ Failed to parse auth response:", err.message);
     }
@@ -61,3 +62,31 @@ authRequest.on('error', err => {
 
 authRequest.write(authPayload);
 authRequest.end();
+
+// Function to trigger automation
+function triggerAutomation(restUrl, token) {
+
+  const options = {
+    hostname: `${subdomain}.rest.marketingcloudapis.com`,
+    path: `/automation/v1/automations/key:${automationKey}/actions/run`,
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  const req = https.request(options, (res) => {
+    let response = '';
+    res.on('data', chunk => response += chunk);
+    res.on('end', () => {
+      console.log("🚀 Automation Trigger Response:");
+      console.log(response);
+    });
+  });
+
+  req.on('error', (err) => {
+    console.error("❌ Automation trigger failed:", err.message);
+  });
+
+  req.end();
+}
