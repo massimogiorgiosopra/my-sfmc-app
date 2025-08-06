@@ -30,9 +30,9 @@ const callback = function(response) {
 const req = http.request(init, callback);
 const body = `{
   "grant_type": "client_credentials",
-  "client_id": {MC_CLIENT_ID},
-  "client_secret": {MC_CLIENT_SECRET},
-  "account_id": {MC_ACCOUNT_ID}
+  "client_id": "mjo118smj8gpxby9r43i46vw",
+  "client_secret": "PKHj46KTMh9sKxJN4iGyDdoC",
+  "account_id": "100006681"
 }`;
 req.write(body);
 req.end();
