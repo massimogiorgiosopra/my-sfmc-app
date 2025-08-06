@@ -1,14 +1,6 @@
-const {
-  MC_CLIENT_ID,
-  MC_CLIENT_SECRET,
-  MC_SUBDOMAIN,
-  MC_DE_KEY,
-  MC_ACCOUNT_ID
-} = process.env;
-
 const http = require('https');
-const auth = {
-  host: '{MC_SUBDOMAIN}.auth.marketingcloudapis.com',
+const init = {
+  host: '{subdomain}.auth.marketingcloudapis.com',
   path: '/v2/token',
   method: 'POST',
   headers: {
@@ -27,7 +19,7 @@ const callback = function(response) {
   });
 };
 
-const req = http.request(auth, callback);
+const req = http.request(init, callback);
 const body = `{
   "grant_type": "client_credentials",
   "client_id": MC_CLIENT_ID,
@@ -35,22 +27,4 @@ const body = `{
   "account_id": MC_ACCOUNT_ID
 }`;
 req.write(body);
-req.end();
-
-const run = {
-  host: `https://${MC_SUBDOMAIN}.rest.marketingcloudapis.com`,
-  path: '/automation/v1/automations/{id}/actions/runallonce',
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${accessToken}`
-  }
-};
-  
-  response.on('end', function() {
-    // result has response body buffer
-    console.log(result.toString());
-  });
-};
-
-const req = http.request(run, callback);
 req.end();
