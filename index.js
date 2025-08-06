@@ -47,6 +47,7 @@ const authRequest = https.request(authOptions, (res) => {
       console.log("✅ Got access token");
       console.log("🔑 Token:", accessToken);
       console.log("🌍 REST URL:", instanceUrl);
+      triggerAutomation(instanceUrl, accessToken);
 
     } catch (err) {
       console.error("❌ Failed to parse auth response:", err.message);
