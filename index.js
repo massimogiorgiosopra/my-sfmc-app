@@ -48,8 +48,6 @@ const authRequest = https.request(authOptions, (res) => {
       console.log("🔑 Token:", accessToken);
       console.log("🌍 REST URL:", instanceUrl);
 
-      // Step 2: Trigger Automation
-      triggerAutomation(instanceUrl, accessToken);
     } catch (err) {
       console.error("❌ Failed to parse auth response:", err.message);
     }
@@ -71,7 +69,7 @@ function triggerAutomation(restUrl, token) {
     path: `/automation/v1/automations/key:${automationKey}/actions/run`,
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${accessToken}`
     }
   };
 
