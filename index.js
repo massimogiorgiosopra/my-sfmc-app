@@ -32,9 +32,6 @@ const body = JSON.stringify({
    account_id: MC_ACCOUNT_ID
 });
 
-const req = http.request(auth, authresponse);
-
-
 const automation = {
   host: `${MC_SUBDOMAIN}.rest.marketingcloudapis.com`,
   path: '/automation/v1/automations/key:{key}/actions/runallonce',
