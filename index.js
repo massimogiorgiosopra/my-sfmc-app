@@ -67,7 +67,7 @@ function triggerAutomation(restUrl, token) {
 
   const options = {
     hostname: `${subdomain}.rest.marketingcloudapis.com`,
-    path: `/automation/v1/automations/key:${automationKey}/actions/run`,
+    path: `/automation/v1/automations/key:${automationKey}/actions/runallonce`,
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`
