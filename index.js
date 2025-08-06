@@ -1,9 +1,14 @@
-let accessToken = '';
-let restUrl = '';
+const {
+  MC_CLIENT_ID,
+  MC_CLIENT_SECRET,
+  MC_SUBDOMAIN,
+  MC_DE_KEY,
+  MC_ACCOUNT_ID
+} = process.env;
 
 const http = require('https');
 const init = {
-  host: '{subdomain}.auth.marketingcloudapis.com',
+  host: '{MC_SUBDOMAIN}.auth.marketingcloudapis.com',
   path: '/v2/token',
   method: 'POST',
   headers: {
