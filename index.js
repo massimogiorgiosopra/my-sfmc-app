@@ -7,7 +7,7 @@ const {
 } = process.env;
 
 const http = require('https');
-const init = {
+const auth = {
   host: '{MC_SUBDOMAIN}.auth.marketingcloudapis.com',
   path: '/v2/token',
   method: 'POST',
@@ -27,7 +27,7 @@ const callback = function(response) {
   });
 };
 
-const req = http.request(init, callback);
+const req = http.request(auth, callback);
 const body = `{
   "grant_type": "client_credentials",
   "client_id": MC_CLIENT_ID,
@@ -37,8 +37,7 @@ const body = `{
 req.write(body);
 req.end();
 
-const http = require('https');
-const init = {
+const run = {
   host: `https://${MC_SUBDOMAIN}.rest.marketingcloudapis.com`,
   path: '/automation/v1/automations/{id}/actions/runallonce',
   method: 'POST',
@@ -58,5 +57,5 @@ const callback = function(response) {
   });
 };
 
-const req = http.request(init, callback);
+const req = http.request(run, callback);
 req.end();
