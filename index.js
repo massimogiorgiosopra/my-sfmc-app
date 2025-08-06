@@ -45,11 +45,6 @@ const run = {
     'Authorization': `Bearer ${accessToken}`
   }
 };
-const callback = function(response) {
-  let result = Buffer.alloc(0);
-  response.on('data', function(chunk) {
-    result = Buffer.concat([result, chunk]);
-  });
   
   response.on('end', function() {
     // result has response body buffer
