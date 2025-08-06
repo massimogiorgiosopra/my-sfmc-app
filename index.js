@@ -24,7 +24,7 @@ const authresponse = function(response) {
   });
 };
 
-const req = http.request(auth, authresponse);
+const authRequest = http.request(auth, authresponse);
 const body = JSON.stringify({
    grant_type: 'client_credentials',
    client_id: MC_CLIENT_ID,
